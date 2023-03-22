@@ -1,5 +1,7 @@
 # Penzle Self-Hosted Edition
-The Self-Hosted edition of Penzle run on a server or computer that is owned and maintained by the user. This means that the you have complete control over the software and data, including customization, privacy, and security. 
+The Self-Hosted edition of Penzle run on a server or computer that is owned and maintained by the user. This means that the you have complete control over the software and data, including customization, privacy, and security. <br/> <br/>
+![Docker Image Api](https://img.shields.io/docker/pulls/penzle/api.svg)
+![Docker Image Api](https://img.shields.io/docker/pulls/penzle/app.svg)
 
 ## Getting started
 As a first step, please download the repository. It is important to ensure that you have administrative permission on the download location. Please be sure to verify your access before proceeding with the download process. This repository contains a docker-compose file for the Penzle project, which consists of the following services:
