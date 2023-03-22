@@ -61,7 +61,7 @@ services:
       - sqlserver
     environment:
       # Self hosting
-      - SelfHosting__ConnectionString=Server=host.docker.internal,1435;Database=penzle-main;User Id=sa;Password=Penzle2023;MultipleActiveResultSets=True
+      - SelfHosting__ConnectionString=Server=host.docker.internal,1435;Database=penzle-main;User Id=sa;Password=Penzle2023;MultipleActiveResultSets=True;Encrypt=False;TrustServerCertificate=True
       - SelfHosting__UseSelfHosting=True
       - SelfHosting__FirstName=John
       - SelfHosting__LastName=Doe
