@@ -6,8 +6,8 @@ services:
     image: rnwood/smtp4dev
     restart: always
     ports:
-      - "5010:80"
-      - "2525:25"
+      - "5012:80"
+      - "2526:25"
       - "1430:143"
 
   sqlserver:
@@ -47,7 +47,7 @@ services:
     image: penzle/app
     container_name: penzle-web
     ports:
-      - "80:80"
+      - "8080:80"
     restart: always
 
   penzle-api:
@@ -76,12 +76,12 @@ services:
       # Email data protection
       - DataProtection__EncryptionKey=cnekbqyftcmnzdeexxwwkykleozjtcap
       # Change password url fallback
-      - WebApplication__ChangePasswordUrl=http://localhost:80/authenticate/change-password?token={0}
+      - WebApplication__ChangePasswordUrl=http://localhost:8080/authenticate/change-password?token={0}
       # Email settings for internal purposes
       - InternalEmailSettings__Username=system@penzle.com
       - InternalEmailSettings__Password=Password
       - InternalEmailSettings__Host=host.docker.internal
-      - InternalEmailSettings__Port=2525
+      - InternalEmailSettings__Port=2526
       - InternalEmailSettings__IsSsl=False
       - InternalEmailSettings__SenderName=Penzle
       - InternalEmailSettings__Sender=system@penzle.com
