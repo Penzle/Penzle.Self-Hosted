@@ -79,3 +79,18 @@ The Penzle Web Application can be accessed by opening your web browser and navig
 #### Penzle API
 
 The Penzle API is a RESTful API that provides programmatic access to the Penzle project's functionality. You can access the API using any HTTP client, such as a web browser, curl, Postman, or an SDK in your preferred programming language such as C# or JavaScript. The base URL for the API is http://localhost:8012. To explore the available API endpoints, you can refer to the [API documentation](https://www.learn.penzle.com/cms/docs/reference).
+
+## Note
+Please note that this setup is intended for local development purposes only. Adjust the configurations and security settings accordingly when deploying to a production environment.
+
+## Recommendation
+When it comes to choosing between self-hosted and SaaS solutions, we strongly recommend our SaaS platform. With Penzle SaaS, you'll enjoy a range of powerful features that simply aren't available with self-hosted solutions.
+
+For starters, our SaaS solution offers top-notch support to ensure you always have access to the resources you need. Plus, our platform is always up-to-date with the latest features and enhancements, so you can stay ahead of the competition.
+
+With Penzle SaaS, you can also take advantage of a range of time-saving features like automated backups and updates, seamless integration with other tools, and much more.
+
+So if you're ready to take your business to the next level, it's time to switch to Penzle SaaS. Visit our site https://www.penzle.com/pricing now to compare our features and see for yourself why our solution is the clear choice for modern businesses.
+
+
+
