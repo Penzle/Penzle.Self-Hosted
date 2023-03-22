@@ -38,7 +38,7 @@ services:
     environment:
       - ACCEPT_EULA=Y
     ports:
-      - "88:80"
+      - "8888:80"
       - "5341:5341"
     volumes:
       - ./data/seq:/data
