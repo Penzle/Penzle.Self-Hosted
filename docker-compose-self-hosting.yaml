@@ -1,0 +1,110 @@
+version: '3.4'
+
+services:
+  email:
+    container_name: pnz-emailsmpt
+    image: rnwood/smtp4dev
+    restart: always
+    ports:
+      - "5010:80"
+      - "2525:25"
+      - "1430:143"
+
+  sqlserver:
+    container_name: pnz-mssql
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    user: root
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Penzle2023
+    ports:
+      - "1435:1433"
+    volumes:
+      - ./data/sqldata:/var/opt/mssql/data
+
+  azurestorage:
+    container_name: pnz-azurestorage
+    image: mcr.microsoft.com/azure-storage/azurite
+    ports:
+      - "10000:10000"
+      - "10001:10001"
+      - "10002:10002"
+    volumes:
+      - ./data/azurite:/data
+
+  seq:
+    container_name: pnz-seq
+    image: datalust/seq
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - "88:80"
+      - "5341:5341"
+    volumes:
+      - ./data/seq:/data
+
+  web:
+    image: penzle/app
+    container_name: penzle-web
+    ports:
+      - "80:80"
+    restart: always
+
+  penzle-api:
+    image: penzle/api
+    container_name: penzle-api
+    ports:
+      - "8012:80"
+    depends_on:
+      - email
+      - azurestorage
+      - sqlserver
+    environment:
+      # Self hosting
+      - SelfHosting__ConnectionString=Server=host.docker.internal,1435;Database=penzle-main;User Id=sa;Password=Penzle2023;MultipleActiveResultSets=True;TrustServerCertificate=True
+      - SelfHosting__UseSelfHosting=True
+      - SelfHosting__FirstName=John
+      - SelfHosting__LastName=Doe
+      - SelfHosting__Email=john.doe@mail.com
+      # Account
+      - Account__MasterUser__UserName=john.doe@mail.com
+      - Account__MasterUser__FirstName=John
+      - Account__MasterUser__LastName=Doe
+      - Account__MasterUser__Email=john.doe@mail.com
+      - Account__MasterUser__Password=Penzle20.23
+      - Account__MasterUser__SendEmail=true
+      # Email data protection
+      - DataProtection__EncryptionKey=cnekbqyftcmnzdeexxwwkykleozjtcap
+      # Change password url fallback
+      - WebApplication__ChangePasswordUrl=http://localhost:80/authenticate/change-password?token={0}
+      # Email settings for internal purposes
+      - InternalEmailSettings__Username=system@penzle.com
+      - InternalEmailSettings__Password=Password
+      - InternalEmailSettings__Host=host.docker.internal
+      - InternalEmailSettings__Port=2525
+      - InternalEmailSettings__IsSsl=False
+      - InternalEmailSettings__SenderName=Penzle
+      - InternalEmailSettings__Sender=system@penzle.com
+      - InternalEmailSettings__SystemUserCreatedReceivers=hello@penzle.com
+      # Marketing email settings
+      - MarketingEmailSettings__MaxMessage=1000
+      - MarketingEmailSettings__DeadLetterQueueRetries=2
+      - MarketingEmailSettings__PerTime=00:00:10
+      # Campaign settings
+      - CampaignSettings__TimeBetweenCampaigns=00:00:10:00
+      # Access token settings
+      - AccessTokenConfiguration__TokenExpiration=00:30:00
+      - AccessTokenConfiguration__Audience=api.penzle.com
+      - AccessTokenConfiguration__Authority=http://host.docker.internal:8012
+      - AccessTokenConfiguration__Secret=51af2a1a3ea4100b106649555547138c
+      # Security settings connection string
+      - SecurityStorageConfiguration__ConnectionString=DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://host.docker.internal:10000/devstoreaccount1; ContainerName=cms; SharedAccessProtocol=HttpsOrHttp
+      # Media storage settings
+      - MediaStorageConfiguration__ConnectionString=DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://host.docker.internal:10000/devstoreaccount1; ContainerName=cms; SharedAccessProtocol=HttpsOrHttp
+      # Logging settings
+      - Logging__Use=Serilog
+      - Logging__Seq__Url=http://host.docker.internal:5341
+      - Logging__ApplicationInsights__ApiKey=
+      - Logging__ApplicationInsights__LogLevel__Default=Information
+      - Logging__ApplicationInsights__Key=
+      - Logging__ApplicationInsights__EnableSqlCommandTextInstrumentation=false
