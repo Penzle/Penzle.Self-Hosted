@@ -2,7 +2,7 @@
 The Self-Hosted edition of Penzle run on a server or computer that is owned and maintained by the user. This means that the you have complete control over the software and data, including customization, privacy, and security. 
 
 ## Getting started
-This repository contains a docker-compose file for the Penzle project, which consists of the following services:
+As first step please download the repository, it is important to ensure that you have administrative permission on the download location. Please be sure to verify your access before proceeding with the download process. This repository contains a docker-compose file for the Penzle project, which consists of the following services:
 
 - **Email**: An SMTP service for testing and sending emails.
 - **SQL Server**: A free Microsoft SQL Server instance based on Linux.
