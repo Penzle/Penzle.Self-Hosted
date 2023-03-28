@@ -12,11 +12,11 @@ services:
 
   sqlserver:
     container_name: pnz-mssql
-    image: mcr.microsoft.com/mssql/server:2019-latest
+    image: mcr.microsoft.com/mssql/server:2022-latest
     user: root
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=Penzle2023
+      - SA_PASSWORD=1Strong#Pwd
     ports:
       - "1435:1433"
     volumes:
@@ -61,7 +61,7 @@ services:
       - sqlserver
     environment:
       # Self hosting
-      - SelfHosting__ConnectionString=Server=host.docker.internal,1435;Database=penzle-main;User Id=sa;Password=Penzle2023;MultipleActiveResultSets=True;Encrypt=False;TrustServerCertificate=True
+      - SelfHosting__ConnectionString=Server=host.docker.internal,1435;Database=penzle-main;User Id=sa;Password=1Strong#Pwd;MultipleActiveResultSets=True;TrustServerCertificate=True;Encrypt=false
       - SelfHosting__UseSelfHosting=True
       - SelfHosting__FirstName=John
       - SelfHosting__LastName=Doe
@@ -100,7 +100,12 @@ services:
       # Security settings connection string
       - SecurityStorageConfiguration__ConnectionString=DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://host.docker.internal:10000/devstoreaccount1; ContainerName=cms; SharedAccessProtocol=HttpsOrHttp
       # Media storage settings
-      - MediaStorageConfiguration__ConnectionString=DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://host.docker.internal:10000/devstoreaccount1; ContainerName=cms; SharedAccessProtocol=HttpsOrHttp
+      # In order to use Azure Storage in the emulator as well as Azure Storage as a Service, you will need to uncomment the following lines.
+      # MediaStorageConfiguration__ConnectionString="DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://localhost:10000/devstoreaccount1; ContainerName=cms; SharedAccessProtocol=HttpsOrHttp"
+      # MediaStorageConfiguration__StorageType=Azure
+      # By default, the application will use SQL Server as a media storage.
+      - MediaStorageConfiguration__ConnectionString=Server=host.docker.internal,1435;Database=penzle-main;User Id=sa;Password=1Strong#Pwd;MultipleActiveResultSets=True;TrustServerCertificate=True;Encrypt=false
+      - MediaStorageConfiguration__StorageType=SqlServer
       # Logging settings
       - Logging__Use=Serilog
       - Logging__Seq__Url=http://host.docker.internal:5341

@@ -82,6 +82,30 @@ The Penzle Web Application can be accessed by opening your web browser and navig
 
 The Penzle API is a RESTful API that provides programmatic access to the Penzle project's functionality. You can access the API using any HTTP client, such as a web browser, curl, Postman, or an SDK in your preferred programming language such as C# or JavaScript. The base URL for the API is http://localhost:8012. To explore the available API endpoints, you can refer to the [API documentation](https://www.learn.penzle.com/cms/docs/reference).
 
+## Media Storage Types
+The Penzle provides a flexible media storage solution that supports multiple storage types, including SQL Server and Azure Storage. With just a few simple configuration changes, you can easily switch between different storage types to suit your needs.
+
+#### Configuration
+To set up your preferred media storage type, you need to configure the `MediaStorageConfiguration` settings. Below are examples of configuration settings for both SQL Server and Azure Storage. To use Azure Storage, modify the `MediaStorageConfiguration` settings as follows (an example connection string points to the local emulator of Azurite):
+
+```
+MediaStorageConfiguration__ConnectionString="DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://localhost:10000/devstoreaccount1; ContainerName=cms; SharedAccessProtocol=HttpsOrHttp"
+MediaStorageConfiguration__StorageType=Azure
+```
+
+By default, the Penzle will use SQL Server as a media storage. To configure SQL Server, modify the `MediaStorageConfiguration` settings as follows (an example connection string points to the local SQL Server instance):
+
+```
+MediaStorageConfiguration__ConnectionString=Server=host.docker.internal,1435;Database=penzle-main;User Id=sa;Password=1Strong#Pwd;MultipleActiveResultSets=True;TrustServerCertificate=True;Encrypt=false
+```
+
+#### A storage upgrade
+When upgrading to Azure Storage, you should be able to transfer your data from SQL Server to Azure Storage by just changing the configuration from `SqlServer` to `Azure` in `MediaStorageConfiguration:StorageType`.
+
+However, as with any migration or upgrade process, it's important to carefully plan and test your migration to ensure that your data is transferred correctly and that your applications and services continue to function as expected after the upgrade.
+
+It's also a good idea to have backups of your data and to test your backup and recovery procedures before making any changes to your production environment.
+
 ## Note
 Please note that this setup is intended for local development purposes only. Adjust the configurations and security settings accordingly when deploying to a production environment.
 
